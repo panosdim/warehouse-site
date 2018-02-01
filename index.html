@@ -10,26 +10,16 @@
   <link rel="stylesheet" href="css/app.css">
 
   <!-- Favicons -->
-  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/icons/apple-touch-icon-57x57.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/icons/apple-touch-icon-114x114.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/icons/apple-touch-icon-72x72.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/icons/apple-touch-icon-144x144.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="60x60" href="images/icons/apple-touch-icon-60x60.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/icons/apple-touch-icon-120x120.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="images/icons/apple-touch-icon-76x76.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="images/icons/apple-touch-icon-152x152.png" />
-  <link rel="icon" type="image/png" href="images/icons/favicon-196x196.png" sizes="196x196" />
-  <link rel="icon" type="image/png" href="images/icons/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/png" href="images/icons/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="images/icons/favicon-16x16.png" sizes="16x16" />
-  <link rel="icon" type="image/png" href="images/icons/favicon-128.png" sizes="128x128" />
-  <meta name="application-name" content="&nbsp;"/>
-  <meta name="msapplication-TileColor" content="#FFFFFF" />
-  <meta name="msapplication-TileImage" content="images/icons/mstile-144x144.png" />
-  <meta name="msapplication-square70x70logo" content="images/icons/mstile-70x70.png" />
-  <meta name="msapplication-square150x150logo" content="images/icons/mstile-150x150.png" />
-  <meta name="msapplication-wide310x150logo" content="images/icons/mstile-310x150.png" />
-  <meta name="msapplication-square310x310logo" content="images/icons/mstile-310x310.png" />
+  <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16" />
+  <link rel="manifest" href="manifest.json">
+  <!-- Add to home screen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Warehouse">
+  <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
+  <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#2F3BA2">
 
   <title>Warehouse</title>
 </head>
@@ -42,44 +32,60 @@
     <img class="mb-4" src="images/stock.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required
+           autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
     <button id="btnLogin" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
-    <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+    <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a
+        href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a
+        href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+    </div>
   </form>
 </div>
 
 <div id="sctMain" class="container d-none">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#"><img class="img-fluid" src="images/stock.svg" alt="" width="32" height="32"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="navbar-brand"><img class="img-fluid" src="images/stock.svg" alt="" width="32" height="32"></div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" href="#food" id="food-tab" data-toggle="pill" role="tab" aria-controls="food" aria-selected="true">Food <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="#detergents" id="detergents-tab" data-toggle="pill" role="tab" aria-controls="detergents" aria-selected="false">Detergents</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
+          <a class="nav-link" href="#sanitary" id="contact-tab" data-toggle="pill" role="tab" aria-controls="sanitary" aria-selected="false">Sanitary</a>
         </li>
       </ul>
-      <form class="form-inline mt-2 mt-md-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
     </div>
+    <form class="form-inline mt-2 mt-md-0">
+      <button id="btnLogout" class="btn btn-danger my-2 my-sm-0" type="submit">Sign Out</button>
+    </form>
   </nav>
-  <div id="main" class="container">
-    <h1>Main Section</h1>
-    <p>test asdfnoasfd   asdfasdfasdf</p>
-  </div>
 
+  <div id="pages" class="tab-content">
+    <div class="tab-pane fade show active" id="food" role="tabpanel" aria-labelledby="food-tab">
+      <h1>Food</h1>
+      <p>test asdfnoasfd asdfasdfasdf</p>
+    </div>
+
+    <div class="tab-pane fade" id="detergents" role="tabpanel" aria-labelledby="detergents-tab">
+      <h1>Detergents</h1>
+    </div>
+
+    <div class="tab-pane fade" id="sanitary" role="tabpanel" aria-labelledby="sanitary-tab">
+      <h1>Sanitary</h1>
+      <p>test asdfnoasfd asdfasdfasdf</p>
+    </div>
+  </div>
 </div>
 
 <!-- Optional JavaScript -->

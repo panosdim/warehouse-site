@@ -12,3 +12,12 @@ $db = new PDO(
     DB_USER,
     DB_PASS
 );
+
+// Operation Return Codes
+abstract class ORC
+{
+    const ERROR = 1;
+    const SUCCESS = 2;
+    const INFO = 3;
+    const FAIL = 4;
+}

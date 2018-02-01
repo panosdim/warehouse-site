@@ -30,32 +30,29 @@ if ($stmt->execute([$email])) {
         // Hashing the DB password with the salt returns the same hash
         if (check_password($query['password'], $password)) {
             // Authentication successful - Set session
+            $_SESSION['userId'] = $query['uid'];
             echo json_encode([
-                "status" => "success",
-                "message" => "Login was successful.",
-                "email" => $email
+                "orc" => ORC::SUCCESS,
+                "message" => "Login was successful."
             ]);
-            $_SESSION['userId'] = $query['id'];
-            $_SESSION['email'] = $email;
-            // TODO: Load demo data in MySQL for demo user
         } else {
             // Authentication was not successful. Inform user with message.
             echo json_encode([
-                "status" => "error",
+                "orc" => ORC::FAIL,
                 "message" => "Login was not successful."
             ]);
         }
     } else {
         // Authentication was not successful. Inform user with message.
         echo json_encode([
-            "status" => "error",
+            "orc" => ORC::FAIL,
             "message" => "Login was not successful."
         ]);
     }
 } else {
     // DB interaction was not successful. Inform user with message.
     echo json_encode([
-        "status" => "error",
+        "orc" => ORC::ERROR,
         "message" => "Problem executing statement in DB. Try again later."
     ]);
 }
