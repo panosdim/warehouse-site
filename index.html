@@ -5,13 +5,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
   <link rel="stylesheet" href="css/app.css">
 
   <!-- Favicons -->
-  <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32"/>
+  <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16"/>
   <link rel="manifest" href="manifest.json">
   <!-- Add to home screen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,8 +28,46 @@
 <div id="alrMessage" class="alert" role="alert">
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="foodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Add New Food</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="frmFood" class="needs-validation" novalidate>
+          <label class="sr-only" for="item">Item</label>
+          <input type="text" class="form-control mb-2 mr-sm-2" id="item" placeholder="Item" required>
+
+          <label class="sr-only" for="expDate">Expiration Date</label>
+          <input type="text" class="form-control mb-2 mr-sm-2" id="expDate" placeholder="Expiration Date" required>
+
+          <label class="sr-only" for="amount">Amount</label>
+          <input type="text" class="form-control mb-2 mr-sm-2" id="amount" placeholder="Amount" required>
+
+          <label class="sr-only" for="box">Box</label>
+          <select class="form-control mb-2 mr-sm-2 custom-select" id="box" required>
+            <option value="1">Box 1</option>
+            <option value="2">Box 2</option>
+            <option value="3">Box 3</option>
+            <option value="4">Box 4</option>
+          </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="btnSaveFood" type="submit" form="frmFood" class="btn btn-primary">Save changes</button>
+        <button id="btnDeleteFood" type="submit" form="frmFood" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="sctLogin" class="container text-center">
-  <form id="frmLogin" class="form-signin">
+  <form id="frmLogin" class="form-signin needs-validation" novalidate>
     <img class="mb-4" src="images/stock.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <label for="inputEmail" class="sr-only">Email address</label>
@@ -46,26 +85,24 @@
 </div>
 
 <div id="sctMain" class="container d-none">
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="navbar-brand"><img class="img-fluid" src="images/stock.svg" alt="" width="32" height="32"></div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="nav nav-pills" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" href="#food" id="food-tab" data-toggle="pill" role="tab" aria-controls="food" aria-selected="true">Food <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#detergents" id="detergents-tab" data-toggle="pill" role="tab" aria-controls="detergents" aria-selected="false">Detergents</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#sanitary" id="contact-tab" data-toggle="pill" role="tab" aria-controls="sanitary" aria-selected="false">Sanitary</a>
-        </li>
-      </ul>
+  <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top justify-content-between">
+    <div class="navbar-brand d-none d-md-inline">
+      <img class="img-fluid" src="images/stock.svg" alt="" width="32" height="32">
     </div>
+    <ul class="nav nav-pills" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" href="#food" id="food-tab" data-toggle="pill" role="tab" aria-controls="food"
+           aria-selected="true">Food <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#detergents" id="detergents-tab" data-toggle="pill" role="tab"
+           aria-controls="detergents" aria-selected="false">Detergents</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#sanitary" id="contact-tab" data-toggle="pill" role="tab" aria-controls="sanitary"
+           aria-selected="false">Sanitary</a>
+      </li>
+    </ul>
     <form class="form-inline mt-2 mt-md-0">
       <button id="btnLogout" class="btn btn-danger my-2 my-sm-0" type="submit">Sign Out</button>
     </form>
@@ -73,8 +110,25 @@
 
   <div id="pages" class="tab-content">
     <div class="tab-pane fade show active" id="food" role="tabpanel" aria-labelledby="food-tab">
-      <h1>Food</h1>
-      <p>test asdfnoasfd asdfasdfasdf</p>
+      <div class="container d-md-flex justify-content-center">
+        <div class="d-flex justify-content-center">
+          <button id="btnAddFood" type="button" class="btn btn-primary mb-2 mr-sm-2">Add New Food</button>
+          <input class="form-control mb-2" type="search" placeholder="Search" aria-label="Search">
+        </div>
+      </div>
+      <div class="container">
+        <table id="tblFood" class="table table-striped">
+          <thead class="thead-light">
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Expiration Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Box</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
 
     <div class="tab-pane fade" id="detergents" role="tabpanel" aria-labelledby="detergents-tab">
@@ -83,16 +137,16 @@
 
     <div class="tab-pane fade" id="sanitary" role="tabpanel" aria-labelledby="sanitary-tab">
       <h1>Sanitary</h1>
-      <p>test asdfnoasfd asdfasdfasdf</p>
     </div>
   </div>
 </div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="./node_modules/jquery/dist/jquery.min.js"></script>
-<script src="./node_modules/popper.js/dist/umd/popper.min.js"></script>
-<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
