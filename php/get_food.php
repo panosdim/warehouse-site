@@ -4,7 +4,7 @@ session_start();
 // If not Login exit
 if (!isset($_SESSION['userId'])) {
     echo json_encode([
-        'status'  => 'error',
+        "orc"  => ORC::ERROR,
         'message' => 'You are not logged in.'
     ]);
     exit();

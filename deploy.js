@@ -36,6 +36,9 @@ for (var dependency in dependencies) {
       });
 }
 
+// Add any manually needed file
+depFiles.push(path.join(nodeModules, 'bootstrap-datepicker', 'dist', 'css', 'bootstrap-datepicker3.min.css'));
+
 var dest = path.join(__dirname, 'dist');
 
 // Copy main files from node_modules to dist folder

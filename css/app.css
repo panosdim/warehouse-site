@@ -24,15 +24,6 @@ body {
     padding-top: 70px;
 }
 
-#alrMessage {
-    position: absolute;
-    margin: auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: fit-content;
-}
-
 .form-signin {
     width: 100%;
     max-width: 330px;

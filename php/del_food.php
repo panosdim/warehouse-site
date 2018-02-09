@@ -4,7 +4,7 @@ session_start();
 // If not Logged In exit
 if (!isset($_SESSION['userId'])) {
     echo json_encode([
-        'status'  => 'error',
+        "orc"  => ORC::ERROR,
         'message' => 'You are not logged in.'
     ]);
     exit();
@@ -21,18 +21,18 @@ $id = $db->quote($id);
 
 // Delete measurements from the table
 $stmt = $db->prepare(
-    "DELETE FROM `watchlist` WHERE id = $id"
+    "DELETE FROM `food` WHERE id = $id"
 );
 
 if ($stmt->execute()) {
     echo json_encode([
-        "status"  => "success",
-        "message" => "Movie was deleted successfully.",
+        "orc" => ORC::SUCCESS,
+        "message" => "Food was deleted successfully.",
     ]);
 } else {
     // DB interaction was not successful. Inform user with message.
     echo json_encode([
-        "status"  => "error",
+        "orc"  => ORC::ERROR,
         "message" => "Problem executing statement in DB. Try again later."
     ]);
 }

@@ -8,6 +8,12 @@ $(function() {
         return month + '-' + this.getFullYear();
     };
 
+    Date.prototype.toISO8601 = function() {
+        return this.getFullYear() + '-' +
+            ('0' + (this.getMonth() + 1)).slice(-2) + '-' +
+            ('0' + this.getDate()).slice(-2);
+    };
+
     var ORC = Object.freeze({
         error: 1,
         success: 2,
@@ -16,7 +22,6 @@ $(function() {
     });
 
     var app = {
-        alrMessage: $('#alrMessage'),
         frmLogin: $('#frmLogin'),
         frmFood: $('#frmFood'),
         sctMain: $('#sctMain'),
@@ -41,49 +46,50 @@ $(function() {
      ****************************************************************************/
 
     app.displayMessage = function(message, type) {
-        app.alrMessage.text(message);
+        var msg_type;
         switch (type) {
             case ORC.error:
-                app.alrMessage
-                    .removeClass('alert-success alert-info alert-warning')
-                    .addClass('alert-danger');
+                msg_type = 'danger';
                 break;
             case ORC.success:
-                app.alrMessage
-                    .removeClass('alert-danger alert-info alert-warning')
-                    .addClass('alert-success');
+                msg_type = 'success';
                 break;
             case ORC.info:
-                app.alrMessage
-                    .removeClass('alert-danger alert-success alert-warning')
-                    .addClass('alert-info');
+                msg_type = 'info';
                 break;
             case ORC.fail:
-                app.alrMessage
-                    .removeClass('alert-danger alert-success alert-info')
-                    .addClass('alert-warning');
+                msg_type = 'warning';
                 break;
             default:
-                app.alrMessage
-                    .removeClass('alert-danger alert-success alert-warning')
-                    .addClass('alert-info');
+                msg_type = 'info';
         }
 
-        app.alrMessage.fadeTo(2000, 500).slideUp(500, function() {
-            app.alrMessage.slideUp(500);
-        });
+        $.notify(
+            {
+                message: message
+            },
+            {
+                type: msg_type,
+                placement: {
+                    from: "bottom",
+                    align: "center"
+                }
+            });
     };
 
     app.displayFood = function() {
         var i = app.food.length;
         var tbody = app.tblFood.find('tbody');
+        tbody.empty();
         var frag = document.createDocumentFragment();
         var now = new Date();
         var nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
         // Construct the table body as fragment
         while (i--) {
+            /** @namespace app.food[i].exp_date */
             var date = new Date(app.food[i].exp_date);
 
+            /** @namespace app.food[i].box */
             var row = $('<tr></tr>')
                 .append($('<td></td>').text(app.food[i].item))
                 .append($('<td></td>').text(date.getMonthYear()))
@@ -100,6 +106,7 @@ $(function() {
                 row.addClass('table-warning');
             }
 
+            /** @namespace app.food[i].exp_date */
             if (!app.food[i].exp_date) {
                 row.find('td:eq(1)').text("Never");
                 row
@@ -214,6 +221,91 @@ $(function() {
             });
     };
 
+    app.addFood = function() {
+        var data = JSON.parse(JSON.stringify(app.frmFood.serializeArray()));
+        var date = $('#expDate').datepicker('getDate');
+        if (date !== null) {
+            data[1].value = date.toISO8601();
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'php/add_food.php',
+            dataType: 'json',
+            data: data
+        })
+            .done(function(result) {
+                /** @namespace result.orc */
+                if (result.orc === ORC.success) {
+                    app.foodModal.modal('hide');
+                    app.getFood();
+                }
+                app.displayMessage(result.message, result.orc);
+            })
+
+            .fail(function(xhr, status, errorThrown) {
+                app.displayMessage("Sorry, there was a problem with AJAX!", ORC.error);
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+                console.dir(xhr);
+            });
+    };
+
+    app.delFood = function(id) {
+        $.ajax({
+            type: 'POST',
+            url: 'php/del_food.php',
+            dataType: 'json',
+            data: {id: id}
+        })
+            .done(function(result) {
+                /** @namespace result.orc */
+                if (result.orc === ORC.success) {
+                    app.foodModal.modal('hide');
+                    app.getFood();
+                }
+                app.displayMessage(result.message, result.orc);
+            })
+
+            .fail(function(xhr, status, errorThrown) {
+                app.displayMessage("Sorry, there was a problem with AJAX!", ORC.error);
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+                console.dir(xhr);
+            });
+    };
+
+    app.updFood = function(id) {
+        var data = JSON.parse(JSON.stringify(app.frmFood.serializeArray()));
+        var date = $('#expDate').datepicker('getDate');
+        if (date !== null) {
+            data[1].value = date.toISO8601();
+        }
+        data.push({name: "id", value: id});
+
+        $.ajax({
+            type: 'POST',
+            url: 'php/upd_food.php',
+            dataType: 'json',
+            data: data
+        })
+            .done(function(result) {
+                /** @namespace result.orc */
+                if (result.orc === ORC.success) {
+                    app.foodModal.modal('hide');
+                    app.getFood();
+                }
+                app.displayMessage(result.message, result.orc);
+            })
+
+            .fail(function(xhr, status, errorThrown) {
+                app.displayMessage("Sorry, there was a problem with AJAX!", ORC.error);
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+                console.dir(xhr);
+            });
+    };
+
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker
             .register('./service-worker.js')
@@ -249,18 +341,31 @@ $(function() {
     app.btnSaveFood.click(function(event) {
         event.preventDefault();
 
+        var id = app.btnSaveFood.data('id');
         app.frmFood.addClass('was-validated');
         if (app.frmFood[0].checkValidity() === true) {
-            console.log("VALID");
-            app.foodModal.modal('hide');
+            if (id) {
+                app.updFood(id);
+            } else {
+                app.addFood();
+            }
         }
+    });
+
+    app.btnDeleteFood.click(function(event) {
+        event.preventDefault();
+
+        app.delFood(app.btnDeleteFood.data('id'));
     });
 
     app.tblFood.click(function(event) {
         var row = $(event.target).closest('tr');
         var id = row.data('id');
+        var date = row.data('date');
         $('#item').val(row.find('td:eq(0)').text());
-        $('#expDate').datepicker('update', new Date(row.data('date')));
+        if (date !== null) {
+            $('#expDate').datepicker('update', new Date(date));
+        }
         $('#amount').val(row.find('td:eq(2)').text());
         $('#box').val(row.find('td:eq(3)').text());
         app.btnSaveFood.data('id', id);
@@ -277,7 +382,6 @@ $(function() {
      *
      ****************************************************************************/
 
-    app.alrMessage.hide();
     app.btnDeleteFood.hide();
     $('#expDate').datepicker({
         format: "mm/yyyy",
@@ -286,11 +390,16 @@ $(function() {
         autoclose: true,
         todayHighlight: true
     });
-    app.foodModal.on('hidden.bs.modal', function (e) {
+    app.foodModal.on('hidden.bs.modal', function() {
         $('#item').val('');
         $('#expDate').datepicker('update', '');
         $('#amount').val('');
         $('#box').val('1');
+        app.frmFood.removeClass('was-validated');
+    });
+
+    $.notifyDefaults({
+        delay: 2000
     });
 
     app.session();

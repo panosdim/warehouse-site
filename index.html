@@ -25,8 +25,6 @@
   <title>Warehouse</title>
 </head>
 <body>
-<div id="alrMessage" class="alert" role="alert">
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="foodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -41,16 +39,16 @@
       <div class="modal-body">
         <form id="frmFood" class="needs-validation" novalidate>
           <label class="sr-only" for="item">Item</label>
-          <input type="text" class="form-control mb-2 mr-sm-2" id="item" placeholder="Item" required>
+          <input name="item" type="text" class="form-control mb-2 mr-sm-2" id="item" placeholder="Item" required>
 
           <label class="sr-only" for="expDate">Expiration Date</label>
-          <input type="text" class="form-control mb-2 mr-sm-2" id="expDate" placeholder="Expiration Date" required>
+          <input name="expDate" type="text" class="form-control mb-2 mr-sm-2" id="expDate" placeholder="Expiration Date">
 
           <label class="sr-only" for="amount">Amount</label>
-          <input type="text" class="form-control mb-2 mr-sm-2" id="amount" placeholder="Amount" required>
+          <input name="amount" type="number" class="form-control mb-2 mr-sm-2" id="amount" placeholder="Amount" required>
 
           <label class="sr-only" for="box">Box</label>
-          <select class="form-control mb-2 mr-sm-2 custom-select" id="box" required>
+          <select name="box" class="form-control mb-2 mr-sm-2 custom-select" id="box" required>
             <option value="1">Box 1</option>
             <option value="2">Box 2</option>
             <option value="3">Box 3</option>
@@ -147,6 +145,7 @@
 <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="node_modules/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
