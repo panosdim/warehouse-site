@@ -8,7 +8,7 @@
   <!-- CSS -->
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/app.min.css">
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32"/>
@@ -26,12 +26,12 @@
 </head>
 <body>
 
-<!-- Modal -->
-<div class="modal fade" id="foodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- Food Modal -->
+<div class="modal fade" id="foodModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalTitle">Add New Food</h5>
+        <h5 class="modal-title" id="foodModalTitle">Add New Food</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -59,6 +59,60 @@
       <div class="modal-footer">
         <button id="btnSaveFood" type="submit" form="frmFood" class="btn btn-primary">Save changes</button>
         <button id="btnDeleteFood" type="submit" form="frmFood" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detergent Modal -->
+<div class="modal fade" id="detergentModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detergentModalTitle">Add New Detergent</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="frmDetergent" class="needs-validation" novalidate>
+          <label class="sr-only" for="item">Item</label>
+          <input name="item" type="text" class="form-control mb-2 mr-sm-2" id="dtgItem" placeholder="Item" required>
+
+          <label class="sr-only" for="amount">Amount</label>
+          <input name="amount" type="number" class="form-control mb-2 mr-sm-2" id="dtgAmount" placeholder="Amount" required>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="btnSaveDetergent" type="submit" form="frmDetergent" class="btn btn-primary">Save changes</button>
+        <button id="btnDeleteDetergent" type="submit" form="frmDetergent" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sanitary Modal -->
+<div class="modal fade" id="sanitaryModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sanitaryModalTitle">Add New Detergent</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="frmSanitary" class="needs-validation" novalidate>
+          <label class="sr-only" for="item">Item</label>
+          <input name="item" type="text" class="form-control mb-2 mr-sm-2" id="snrItem" placeholder="Item" required>
+
+          <label class="sr-only" for="amount">Amount</label>
+          <input name="amount" type="number" class="form-control mb-2 mr-sm-2" id="snrAmount" placeholder="Amount" required>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="btnSaveSanitary" type="submit" form="frmSanitary" class="btn btn-primary">Save changes</button>
+        <button id="btnDeleteSanitary" type="submit" form="frmSanitary" class="btn btn-danger">Delete</button>
       </div>
     </div>
   </div>
@@ -111,7 +165,7 @@
       <div class="container d-md-flex justify-content-center">
         <div class="d-flex justify-content-center">
           <button id="btnAddFood" type="button" class="btn btn-primary mb-2 mr-sm-2">Add New Food</button>
-          <input class="form-control mb-2" type="search" placeholder="Search" aria-label="Search">
+          <input id="foodSearch" class="form-control mb-2" type="search" placeholder="Search" aria-label="Search">
         </div>
       </div>
       <div class="container">
@@ -119,7 +173,7 @@
           <thead class="thead-light">
           <tr>
             <th scope="col">Item</th>
-            <th scope="col">Expiration Date</th>
+            <th data-sort-default scope="col">Expiration Date</th>
             <th scope="col">Amount</th>
             <th scope="col">Box</th>
           </tr>
@@ -130,11 +184,43 @@
     </div>
 
     <div class="tab-pane fade" id="detergents" role="tabpanel" aria-labelledby="detergents-tab">
-      <h1>Detergents</h1>
+        <div class="container d-md-flex justify-content-center">
+          <div class="d-flex justify-content-center">
+            <button id="btnAddDetergent" type="button" class="btn btn-primary mb-2 mr-sm-2">Add New Detergent</button>
+            <input id="detergentSearch" class="form-control mb-2" type="search" placeholder="Search" aria-label="Search">
+          </div>
+        </div>
+        <div class="container">
+          <table id="tblDetergents" class="table table-striped">
+            <thead class="thead-light">
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Amount</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
     </div>
 
     <div class="tab-pane fade" id="sanitary" role="tabpanel" aria-labelledby="sanitary-tab">
-      <h1>Sanitary</h1>
+      <div class="container d-md-flex justify-content-center">
+        <div class="d-flex justify-content-center">
+          <button id="btnAddSanitary" type="button" class="btn btn-primary mb-2 mr-sm-2">Add New Sanitary</button>
+          <input id="sanitarySearch" class="form-control mb-2" type="search" placeholder="Search" aria-label="Search">
+        </div>
+      </div>
+      <div class="container">
+        <table id="tblSanitary" class="table table-striped">
+          <thead class="thead-light">
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Amount</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -146,6 +232,7 @@
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="node_modules/bootstrap-notify/bootstrap-notify.min.js"></script>
-<script src="js/app.js"></script>
+<script src='node_modules/tablesort/dist/tablesort.min.js'></script>
+<script src="js/app.min.js"></script>
 </body>
 </html>

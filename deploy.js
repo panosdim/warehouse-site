@@ -27,17 +27,23 @@ for (var dependency in dependencies) {
         var file = dependencyPkg[fileKey] || '';
         if (file && file.length) {
             var f = path.parse(path.join(__dirname, modulePath, file));
+            var min_file = '';
             if (f.ext !== '') {
-                depFiles.push(path.join(f.dir, f.name + ".min" + f.ext));
+                min_file = path.join(f.dir, f.name + ".min" + f.ext);
             } else {
-                depFiles.push(path.join(f.dir, f.name + ".min.js"));
-            }          
+                min_file = path.join(f.dir, f.name + ".min.js");
+            }
+
+            if (fs.existsSync(min_file)) {
+                depFiles.push(min_file);
+            }
         }
       });
 }
 
 // Add any manually needed file
 depFiles.push(path.join(nodeModules, 'bootstrap-datepicker', 'dist', 'css', 'bootstrap-datepicker3.min.css'));
+depFiles.push(path.join(nodeModules, 'tablesort', 'dist', 'tablesort.min.js'));
 
 var dest = path.join(__dirname, 'dist');
 
@@ -78,5 +84,11 @@ fse.copySync(path.join(__dirname, 'images'), path.join(dest, 'images'));
 // Copy php files
 fse.copySync(path.join(__dirname, 'php'), path.join(dest, 'php'));
 
-// Copy index files
+// Copy index file
 fse.copySync(path.join(__dirname, 'index.html'), path.join(dest, 'index.html'));
+
+// Copy manifest file
+fse.copySync(path.join(__dirname, 'manifest.json'), path.join(dest, 'manifest.json'));
+
+// Copy service worker file
+fse.copySync(path.join(__dirname, 'service-worker.js'), path.join(dest, 'service-worker.js'));
