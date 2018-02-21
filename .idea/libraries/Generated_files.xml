@@ -3,12 +3,11 @@
     <properties>
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/js/app.min.js" />
-        <item url="file://$PROJECT_DIR$/js/tablesort.min.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/js/app.min.js" />
       <root url="file://$PROJECT_DIR$/js/tablesort.min.min.js" />
+      <root url="file://$PROJECT_DIR$/js/app.min.js" />
     </CLASSES>
     <SOURCES />
   </library>

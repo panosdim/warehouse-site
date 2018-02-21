@@ -16,13 +16,13 @@
 var dataCacheName = 'warehousedata-v1';
 var cacheName = 'warehouse-1';
 var filesToCache = [
-    '/warehouse',
-    '/warehouse/index.html',
-    '/warehouse/js/app.js',
-    '/warehouse/css/app.css',
-    '/warehouse/images/stock.svg',
-    '/warehouse/images/favicon-32x32.png',
-    '/warehouse/images/favicon-16x16.png'
+    '/',
+    '/index.html',
+    '/js/app.min.js',
+    '/css/app.min.css',
+    '/images/stock.svg',
+    '/images/favicon-32x32.png',
+    '/images/favicon-16x16.png'
 ];
 
 self.addEventListener('install', function(e) {
@@ -47,4 +47,18 @@ self.addEventListener('activate', function(e) {
             }));
         })
     );
+});
+
+self.addEventListener('fetch', function(e) {
+	console.log('[Service Worker] Fetch', e.request.url);
+	/*
+	 * The app is asking for app shell files. In this scenario the app uses the
+	 * "Cache, falling back to the network" offline strategy:
+	 * https://jakearchibald.com/2014/offline-cookbook/#cache-falling-back-to-network
+	 */
+	e.respondWith(
+	  caches.match(e.request).then(function(response) {
+	    return response || fetch(e.request);
+	  })
+	);
 });

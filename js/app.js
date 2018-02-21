@@ -48,6 +48,9 @@ $(function() {
         detergentModalTitle: $('#detergentModalTitle'),
         sanitaryModal: $('#sanitaryModal'),
         sanitaryModalTitle: $('#sanitaryModalTitle'),
+        foodSearch: $('#foodSearch'),
+        sanitarySearch: $('#sanitarySearch'),
+        detergentSearch: $('#detergentSearch'),
         food: [],
         detergents: [],
         sanitary: []
@@ -134,6 +137,8 @@ $(function() {
         }
         // Add fragment to table body in DOM
         tbody.append(frag);
+        var inp = app.foodSearch.val();
+        app.foodSearch.val(inp).trigger('keyup');
     };
 
     app.displayDetergents = function() {
@@ -161,6 +166,8 @@ $(function() {
         }
         // Add fragment to table body in DOM
         tbody.append(frag);
+        var inp = app.detergentSearch.val();
+        app.detergentSearch.val(inp).trigger('keyup');
     };
 
     app.displaySanitary = function() {
@@ -188,6 +195,8 @@ $(function() {
         }
         // Add fragment to table body in DOM
         tbody.append(frag);
+        var inp = app.sanitarySearch.val();
+        app.sanitarySearch.val(inp).trigger('keyup');
     };
 
     /*****************************************************************************
@@ -766,7 +775,7 @@ $(function() {
         delay: 2000
     });
 
-    $("#foodSearch").keyup(function() {
+    app.foodSearch.keyup(function() {
         // Split the current value of searchInput
         var data = this.value.split(" ");
         // Create a jquery object of the rows
@@ -779,7 +788,7 @@ $(function() {
         jo.hide();
 
         // Recursively filter the jquery object to get results.
-        jo.filter(function(i, v) {
+        jo.filter(function() {
             var $t = $(this);
             for (var d = 0; d < data.length; ++d) {
                 if ($t.text().toUpperCase().indexOf(data[d].toUpperCase()) > -1) {
@@ -791,7 +800,7 @@ $(function() {
             .show();
     });
 
-    $("#detergentSearch").keyup(function() {
+    app.detergentSearch.keyup(function() {
         // Split the current value of searchInput
         var data = this.value.split(" ");
         // Create a jquery object of the rows
@@ -804,7 +813,7 @@ $(function() {
         jo.hide();
 
         // Recursively filter the jquery object to get results.
-        jo.filter(function(i, v) {
+        jo.filter(function() {
             var $t = $(this);
             for (var d = 0; d < data.length; ++d) {
                 if ($t.text().toUpperCase().indexOf(data[d].toUpperCase()) > -1) {
@@ -816,7 +825,7 @@ $(function() {
             .show();
     });
 
-    $("#sanitarySearch").keyup(function() {
+    app.sanitarySearch.keyup(function() {
         // Split the current value of searchInput
         var data = this.value.split(" ");
         // Create a jquery object of the rows
@@ -829,7 +838,7 @@ $(function() {
         jo.hide();
 
         // Recursively filter the jquery object to get results.
-        jo.filter(function(i, v) {
+        jo.filter(function() {
             var $t = $(this);
             for (var d = 0; d < data.length; ++d) {
                 if ($t.text().toUpperCase().indexOf(data[d].toUpperCase()) > -1) {
