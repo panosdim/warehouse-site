@@ -89,6 +89,3 @@ fse.copySync(path.join(__dirname, 'index.html'), path.join(dest, 'index.html'));
 
 // Copy manifest file
 fse.copySync(path.join(__dirname, 'manifest.json'), path.join(dest, 'manifest.json'));
-
-// Copy service worker file
-fse.copySync(path.join(__dirname, 'service-worker.js'), path.join(dest, 'service-worker.js'));
